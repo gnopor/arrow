@@ -1,9 +1,17 @@
 <template>
-  <div class="container">home page</div>
+  <div class="container">
+    home
+    <Logo />
+  </div>
 </template>
 
 <script>
-export default {};
+import Logo from "@/components/Logo";
+export default {
+  components: {
+    Logo,
+  },
+};
 </script>
 
 <style>

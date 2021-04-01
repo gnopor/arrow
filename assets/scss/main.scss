@@ -1,0 +1,32 @@
+// Variables
+// $secondary: gold;
+
+// Utilities
+$utilities: (
+  (
+    "custom-bg": (
+      property: background,
+      class: bg,
+      values: (
+        base: #000,
+        accent: #99c2f3,
+        white: #fff,
+        lg: #f5f5f5,
+        dg: #191a19
+      )
+    ),
+    "custom-text": (
+      property: color,
+      class: text,
+      values: (
+        base: #000,
+        accent: #99c2f3,
+        white: #fff,
+        lg: #f5f5f5,
+        dg: #191a19
+      )
+    )
+  )
+);
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
