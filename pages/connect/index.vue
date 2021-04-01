@@ -14,21 +14,9 @@
           <div class="row">
             <div class="col-10 col-sm-7 col-md-6 col-lg-4 m-auto">
               <div class="login row g-3">
-                <div>
-                  <input
-                    type="email"
-                    class="form-control bg-base text-lg"
-                    placeholder="Email"
-                  />
-                </div>
+                <InputField type="email" placeholder="Email" />
 
-                <div>
-                  <input
-                    type="password"
-                    class="form-control bg-base text-lg"
-                    placeholder="Password"
-                  />
-                </div>
+                <InputField type="password" placeholder="Password" />
               </div>
             </div>
           </div>
@@ -42,7 +30,9 @@
 </template>
 
 <script>
+import InputField from "../../components/UI/InputField.vue";
 export default {
+  components: { InputField },
   head() {
     return {
       title: this.is_login ? "Arrow | Login" : "Arrow | Signup",
