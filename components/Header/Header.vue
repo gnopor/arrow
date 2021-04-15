@@ -4,7 +4,9 @@
       <!-- menu  -->
       <div class="d-flex d-md-none align-items-center">
         <span style="cursor: pointer">
-          <mdicon name="menu" />
+          <client-only>
+            <mdicon name="menu" />
+          </client-only>
         </span>
       </div>
 

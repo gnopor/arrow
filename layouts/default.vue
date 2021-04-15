@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main_layout">
     <Header />
     <Nuxt />
     <!-- <Footer /> -->
@@ -18,4 +18,9 @@ export default {
 </script>
 
 <style>
+.main_layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 </style>

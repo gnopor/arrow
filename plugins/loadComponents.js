@@ -1,4 +1,4 @@
 import Vue from "vue";
 import InputField from "@/components/UI/InputField";
 
-Vue.use(InputField);
+Vue.component("InputField", InputField);

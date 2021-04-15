@@ -98,6 +98,7 @@
 <script>
 import InputField from "../../components/UI/InputField.vue";
 export default {
+  layout: "login",
   components: { InputField },
   head() {
     return {
