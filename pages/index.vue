@@ -35,5 +35,8 @@ export default {
 /* message_container  */
 #message_container {
   flex: 1 0;
+  border: 1px solid #000;
+  border-width: 1px 0 1px 1px;
+  padding: 0;
 }
 </style>

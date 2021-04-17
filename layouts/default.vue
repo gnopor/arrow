@@ -19,6 +19,7 @@ export default {
 
 <style>
 .main_layout {
+  background: var(--base);
   display: flex;
   flex-direction: column;
   height: 100vh;

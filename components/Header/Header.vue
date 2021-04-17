@@ -15,7 +15,7 @@
         <img
           src="/images/logo1.png"
           alt="tayoublaise arrow"
-          style="width: 100px"
+          style="width: 100px; height: 50px"
         />
       </div>
 
