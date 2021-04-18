@@ -1,3 +1,7 @@
+const baseUrl = process.env.baseUrl || "http://localhost:8000";
+const localUrl = process.env.baseUrl || "http://localhost:3000";
+const axiosBaseUrl = `${baseUrl}/core`;
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
@@ -30,9 +34,16 @@ export default {
     {
       src: "~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
       mode: "client"
+    },
+    {
+      src: "~/plugins/socket.io-client.client.js",
+      mode: "client"
     }
   ],
-
+  env: {
+    baseUrl: baseUrl,
+    localUrl: localUrl
+  },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
@@ -46,7 +57,9 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: axiosBaseUrl
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {}

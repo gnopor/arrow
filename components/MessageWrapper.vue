@@ -87,7 +87,7 @@
         />
       </div>
 
-      <button>
+      <button @click="handleTest">
         <client-only>
           <mdicon name="send" />
         </client-only>
@@ -109,6 +109,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "MessageWrapper",
   data: () => ({
@@ -136,6 +137,7 @@ export default {
     this.handleMessageBoxHeight();
   },
   methods: {
+    ...mapActions(["test"]),
     handleMessageBoxHeight() {
       window.addEventListener("resize", (event) => this.updateHeight(this.box));
       this.updateHeight(this.box);
@@ -150,6 +152,9 @@ export default {
     scrollToDown() {
       // this.box.scrollTo(0, this.max_scroll);
       this.box.scrollTo({ top: this.max_scroll, left: 0, behavior: "smooth" });
+    },
+    handleTest() {
+      this.test();
     },
   },
 };
