@@ -2,12 +2,12 @@
   <div class="container" id="home">
     <div class="row h-100">
       <!-- side menu  -->
-      <section class="d-none d-md-flex col-md-3" id="side_menu_container">
+      <section class="d-none d-md-flex col-md-4" id="side_menu_container">
         <SideMenu />
       </section>
 
       <!-- message container  -->
-      <section class="col-12 col-md-7" id="message_container">
+      <section class="col-12 col-md-6" id="message_container">
         <MessageWrapper />
       </section>
     </div>

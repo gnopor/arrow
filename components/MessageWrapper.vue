@@ -83,7 +83,7 @@
         <textarea
           @input="$refs.resizer.innerText = $refs.message_input.value"
           ref="message_input"
-          placeholder="Enter message here..."
+          placeholder="Enter your message here..."
         />
       </div>
 

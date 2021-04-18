@@ -1,11 +1,11 @@
 <template>
-  <header class="bg-base text-white py-3">
+  <header ref="app_header" class="bg-base py-3">
     <div class="container d-flex justify-content-between">
       <!-- menu  -->
-      <div class="d-flex d-md-none align-items-center">
-        <span style="cursor: pointer">
+      <div class="d-flex d-md-none align-items-center text-white">
+        <span style="cursor: pointer" @click="show_side_menu = !show_side_menu">
           <client-only>
-            <mdicon name="menu" />
+            <mdicon :name="show_side_menu ? 'close' : 'menu'" />
           </client-only>
         </span>
       </div>
@@ -20,7 +20,7 @@
       </div>
 
       <!-- user infos  -->
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center text-white">
         <div class="row">
           <span class="col d-none d-md-flex align-items-center">name</span>
           <img
@@ -31,12 +31,42 @@
         </div>
       </div>
     </div>
+
+    <!-- side menu container  -->
+    <div
+      v-if="show_side_menu"
+      id="sideMenuWrapper"
+      class="d-md-none"
+      :style="`height: calc(100vh - ${getSideMenuHeight}px)`"
+    >
+      <SideMenu />
+    </div>
   </header>
 </template>
 
 <script>
-export default {};
+import SideMenu from "@/components/SideMenu";
+export default {
+  name: "Header",
+  components: {
+    SideMenu,
+  },
+  data: () => ({
+    show_side_menu: false,
+  }),
+  computed: {
+    getSideMenuHeight() {
+      const height = this.$refs.app_header.clientHeight;
+      return height;
+    },
+  },
+};
 </script>
 
 <style scoped>
+#sideMenuWrapper {
+  position: fixed;
+  width: 100vw;
+  z-index: 10;
+}
 </style>

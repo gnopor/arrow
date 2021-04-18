@@ -13,7 +13,7 @@
 
       <div class="contact_list">
         <div class="room_card p-2">
-          <div class="avatar">
+          <div class="avatar" data-connected>
             <img src="/images/avatar.png" alt="room title avatar" />
           </div>
           <div class="infos mx-2">
@@ -123,6 +123,7 @@ export default {
 
 /* .room_card .avatar  */
 .room_card .avatar {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -131,6 +132,7 @@ export default {
   max-width: 4em;
   overflow: hidden;
 }
+
 .room_card .avatar img {
   border-radius: inherit;
   height: 4em;
@@ -140,6 +142,17 @@ export default {
 
 .room_card:hover .avatar img {
   transform: scale(1.5);
+}
+
+.room_card .avatar[data-connected]::before {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  content: "";
+  height: 1em;
+  width: 1em;
+  background: var(--accent);
+  border-radius: 50%;
 }
 
 /* .room_card .infos  */
