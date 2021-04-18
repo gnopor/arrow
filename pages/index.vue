@@ -3,7 +3,7 @@
     <div class="row h-100">
       <!-- side menu  -->
       <section class="d-none d-md-flex col-md-3" id="side_menu_container">
-        a
+        <SideMenu />
       </section>
 
       <!-- message container  -->
@@ -16,9 +16,11 @@
 
 <script>
 import MessageWrapper from "@/components/MessageWrapper.vue";
+import SideMenu from "@/components/SideMenu.vue";
 export default {
   components: {
     MessageWrapper,
+    SideMenu,
   },
 };
 </script>
