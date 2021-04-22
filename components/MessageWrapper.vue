@@ -2,78 +2,12 @@
   <div id="message_wrapper" class="bg-lg">
     <!-- message box  -->
     <section class="messages_box">
-      <div class="message">
-        <div>
-          <div class="user_infos">
-            <span>@username</span>
-          </div>
-          <div class="message_body">
-            <p>
-              messageffffffffsdjfl;jsadf sapdjfjdsaf osdafl;jsa dflsadjfo;asdf
-              adsjflsjad;f s;adjfdasj;fldsja fdsajfsdafs body
-            </p>
-          </div>
-          <div class="date">
-            <span>{{ "new Date()" }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="message" data-current>
-        <div>
-          <div class="user_infos">
-            <span>@username</span>
-          </div>
-          <div class="message_body">
-            <p>message bo sadf sadf sadf sadf dsaf asdfdy</p>
-          </div>
-          <div class="date">
-            <span>{{ "new Date()" }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="message">
-        <div>
-          <div class="user_infos">
-            <span>username</span>
-          </div>
-          <div class="message_body">
-            <p>message body</p>
-          </div>
-          <div class="date">
-            <span>{{ "new Date()" }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="message" data-current>
-        <div>
-          <div class="user_infos">
-            <span>username</span>
-          </div>
-          <div class="message_body">
-            <p>message body</p>
-          </div>
-          <div class="date">
-            <span>{{ "new Date()" }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="message">
-        <div>
-          <div class="user_infos">
-            <span>username</span>
-          </div>
-          <div class="message_body">
-            <p>message body</p>
-          </div>
-          <div class="date">
-            <span>{{ "new Date()" }}</span>
-          </div>
-        </div>
-      </div>
+      <MessageCard />
+      <MessageCard current_user />
+      <MessageCard />
+      <MessageCard current_user />
+      <MessageCard />
+      <MessageCard current_user />
     </section>
 
     <!-- message input  -->
@@ -94,7 +28,7 @@
       </button>
 
       <!-- scroll button  -->
-      <div
+      <button
         v-if="show_scroll_down"
         id="scroll_button"
         class="bg-accent text-white"
@@ -103,15 +37,19 @@
         <client-only>
           <mdicon name="chevron-down" />
         </client-only>
-      </div>
+      </button>
     </section>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import MessageCard from "@/components/UI/MessageCard";
 export default {
   name: "MessageWrapper",
+  components: {
+    MessageCard,
+  },
   data: () => ({
     show_scroll_down: false,
     max_scroll: 0,
@@ -174,40 +112,6 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
-}
-
-/* .messages_box .message  */
-.message {
-  padding: 5px;
-  margin: 5px 0;
-}
-
-.message > div {
-  display: flex;
-  flex-direction: column;
-  background: var(--white);
-  border-radius: 15px;
-  padding: 5px;
-  width: fit-content;
-  max-width: 80%;
-  overflow-wrap: break-word;
-}
-
-.message > div > .user_infos {
-  font-weight: bold;
-}
-
-.message > div > .date > * {
-  float: right;
-}
-
-.message[data-current] > div {
-  background: var(--accent);
-  color: var(--white);
-}
-
-.message[data-current] * {
-  float: right;
 }
 
 /* message_input  */

@@ -1,5 +1,5 @@
 <template>
-  <div id="side_menu" class="bg-lg h-100">
+  <aside id="side_menu" class="bg-lg h-100">
     <!-- contact rooms -->
     <section id="contact_rooms">
       <div class="title">
@@ -12,8 +12,8 @@
       </div>
 
       <div class="contact_list">
-        <div class="room_card p-2">
-          <div class="avatar" data-connected>
+        <!-- <div class="room_card p-2">
+          <div class="avatar">
             <img src="/images/avatar.png" alt="room title avatar" />
           </div>
           <div class="infos mx-2">
@@ -26,8 +26,19 @@
               <mdicon name="bell" />
             </client-only>
           </div>
-        </div>
+        </div> -->
 
+        <RoomCard
+          room_name="room_name"
+          creation_date="room creation date"
+          show_bell
+        />
+        <RoomCard
+          room_name="room_name"
+          creation_date="room creation date"
+          active
+        />
+        <!-- 
         <div data-active class="room_card p-2">
           <div class="avatar">
             <img src="/images/avatar.png" alt="room title avatar" />
@@ -36,7 +47,7 @@
             <span class="room_username">@room_name</span>
             <span class="room_date">room creation date</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
 
@@ -62,12 +73,16 @@
         <span class="mx-2"> New Group </span>
       </div>
     </section>
-  </div>
+  </aside>
 </template>
 
 <script>
+import RoomCard from "@/components/UI/RoomCard";
 export default {
   name: "SideMenu",
+  components: {
+    RoomCard,
+  },
 };
 </script>
 
@@ -100,79 +115,6 @@ export default {
 }
 
 /* #side_menu > section .room_card */
-.room_card {
-  position: relative;
-  display: flex;
-  cursor: pointer;
-}
-
-.room_card[data-active] {
-  background: var(--base);
-  color: var(--lg);
-}
-
-.room_card::before {
-  position: absolute;
-  top: 0;
-  content: "";
-  width: 95%;
-  border: 1px solid var(--base);
-  border-width: 0 0 1px 0;
-  margin: auto;
-}
-
-/* .room_card .avatar  */
-.room_card .avatar {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  max-height: 4em;
-  max-width: 4em;
-  overflow: hidden;
-}
-
-.room_card .avatar img {
-  border-radius: inherit;
-  height: 4em;
-  width: 4em;
-  transition: 0.5s ease;
-}
-
-.room_card:hover .avatar img {
-  transform: scale(1.5);
-}
-
-.room_card .avatar[data-connected]::before {
-  position: absolute;
-  top: 25%;
-  left: 0;
-  content: "";
-  height: 1em;
-  width: 1em;
-  background: var(--accent);
-  border-radius: 50%;
-}
-
-/* .room_card .infos  */
-.room_card .infos {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.room_card .infos .room_username {
-  font-size: 1.1em;
-  font-weight: bold;
-}
-
-/* .room_card .bell  */
-.room_card .bell {
-  position: absolute;
-  right: 10px;
-  transform: rotate(22deg);
-}
 
 /* ==> */
 /* contact_rooms  */

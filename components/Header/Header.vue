@@ -1,6 +1,6 @@
 <template>
   <header ref="app_header" class="bg-base py-3">
-    <div class="container d-flex justify-content-between">
+    <nav class="container d-flex justify-content-between">
       <!-- menu  -->
       <div class="d-flex d-md-none align-items-center text-white">
         <span style="cursor: pointer" @click="show_side_menu = !show_side_menu">
@@ -30,7 +30,7 @@
           />
         </div>
       </div>
-    </div>
+    </nav>
 
     <!-- side menu container  -->
     <div
