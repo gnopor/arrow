@@ -1,6 +1,6 @@
-const baseUrl = process.env.baseUrl || "http://localhost:8000";
-const localUrl = process.env.baseUrl || "http://localhost:3000";
-const axiosBaseUrl = `${baseUrl}/core`;
+const BASE_URL = process.env.baseUrl || "http://localhost:8000";
+const LOCAL_URL = process.env.baseUrl || "http://localhost:3000";
+const axiosBaseUrl = `${BASE_URL}/core`;
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -41,8 +41,8 @@ export default {
     }
   ],
   env: {
-    baseUrl: baseUrl,
-    localUrl: localUrl
+    baseUrl: BASE_URL,
+    localUrl: LOCAL_URL
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -51,10 +51,7 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    // https://go.nuxtjs.dev/axios
-    "@nuxtjs/axios"
-  ],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth"],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -62,5 +59,47 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {}
+  build: {},
+  // auth configuration
+  auth: {
+    // Options
+    redirect: {
+      login: "/connect",
+      logout: "/",
+      callback: false,
+      home: "/middleware"
+    },
+    strategies: {
+      local: {
+        scheme: "refresh",
+        token: {
+          property: "access_token",
+          maxAge: 60 * 60 * 24 * 7
+          // type: 'Bearer'
+        },
+        refreshToken: {
+          property: "refresh_token",
+          maxAge: 60 * 60 * 24 * 7
+          // data: "refresh_token",
+        },
+
+        endpoints: {
+          login: {
+            url: `${BASE_URL}/auth/login`,
+            method: "post",
+            propertyName: "access_token"
+          },
+          refresh: {
+            url: `${BASE_URL}/auth/refresh_token`,
+            method: "post"
+          },
+          logout: { url: `${BASE_URL}/auth/logout`, method: "get" },
+          user: false
+        }
+      }
+    }
+  },
+  router: {
+    middleware: ["auth"]
+  }
 };
