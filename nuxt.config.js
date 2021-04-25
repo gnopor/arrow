@@ -30,6 +30,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     "~/plugins/loadComponents.js",
+    "~/plugins/helpers.js",
     { src: "~/plugins/mdi-vue.client.js", mode: "client" },
     {
       src: "~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
