@@ -31,6 +31,7 @@
                 <button
                   class="btn text-white"
                   style="border: 1px solid white; text-transform: uppercase"
+                  @click="handleRegister"
                 >
                   login
                 </button>
@@ -124,10 +125,12 @@
 </template>
 
 <script>
+import alert from "@/static/mixins/alert";
 import InputField from "../../components/UI/InputField.vue";
 export default {
   layout: "login",
   components: { InputField },
+  mixins: [alert],
   head() {
     return {
       title: this.is_login ? "Arrow | Login" : "Arrow | Signup",
@@ -165,7 +168,8 @@ export default {
     },
     async handleRegister() {
       try {
-        console.log(this.signup);
+        this.loading = !this.loading;
+        // console.log(this.signup);
       } catch (error) {
         console.log(error);
       }
