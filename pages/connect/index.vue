@@ -31,7 +31,6 @@
                 <button
                   class="btn text-white"
                   style="border: 1px solid white; text-transform: uppercase"
-                  @click="handleRegister"
                 >
                   login
                 </button>
@@ -125,6 +124,7 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
 import alert from "@/static/mixins/alert";
 import InputField from "../../components/UI/InputField.vue";
 export default {
@@ -168,10 +168,22 @@ export default {
     },
     async handleRegister() {
       try {
-        this.loading = !this.loading;
-        // console.log(this.signup);
+        this.loading = true;
+        let data = await this.$__validateRegisterForm({ ...this.signup });
+        data._id = uuidv4();
+        delete data.confirm_password;
+
+        const img = await this.$__sendImage(this.signup.avatar, data._id);
+        data.avatar = img.path;
+
+        console.log(data);
+
+        this.signup = {};
+        this.loading = false;
       } catch (error) {
-        console.log(error);
+        this.loading = false;
+        this.error = error;
+        console.log("Error: ", error);
       }
     },
   },

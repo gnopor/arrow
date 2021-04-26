@@ -12,7 +12,7 @@ Vue.prototype.$__validateRegisterForm = form => {
       }
     });
 
-    form.password.trim() != form.confirm_passworn.trim() &&
+    form.password.trim() != form.confirm_password.trim() &&
       reject(errors("passords"));
 
     (form.avatar && form.avatar.size) || reject(errors("avatar"));
@@ -22,7 +22,7 @@ Vue.prototype.$__validateRegisterForm = form => {
       .match(/^\b[A-Za-z0-9_]+@[A-Za-z0-9_]+\.[A-Za-z0-9]+$/g) &&
       reject(errors("email"));
 
-    resolve();
+    resolve(form);
   });
 };
 
@@ -30,7 +30,7 @@ Vue.prototype.$__validateRegisterForm = form => {
 Vue.prototype.$__sendImage = (file, name) => {
   const API_URL = `${process.env.baseUrl}/files/upload-file`;
   const formData = new FormData();
-  formData.append(name, file, file.name);
+  formData.append(`arrow-${name}`, file, file.name);
 
   return new Promise((resolve, reject) => {
     fetch(API_URL, {
