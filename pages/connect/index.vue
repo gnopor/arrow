@@ -146,10 +146,14 @@ export default {
       this.is_login = !this.is_login;
     },
     showImage(event) {
+      const selectedFile = event.target.files[0];
+      if (!selectedFile) {
+        return;
+      }
       const content = this.$refs.avatar;
       const img = document.createElement("img");
       const reader = new FileReader();
-      const selectedFile = event.target.files[0];
+
       this.signup.avatar = selectedFile;
 
       img.title = selectedFile.name;
@@ -169,20 +173,29 @@ export default {
     async handleRegister() {
       try {
         this.loading = true;
-        let data = await this.$__validateRegisterForm({ ...this.signup });
-        data._id = uuidv4();
-        delete data.confirm_password;
+        // validate form
+        let user = await this.$__validateRegisterForm({ ...this.signup });
+        user._id = uuidv4();
+        delete user.confirm_password;
 
-        const img = await this.$__sendImage(this.signup.avatar, data._id);
-        data.avatar = img.path;
+        // send avatar
+        const img = await this.$__sendImage(this.signup.avatar, user._id);
+        user.avatar = img.path;
 
-        console.log(data);
+        // send new user data
+        const { data } = await this.$axios.post(
+          `${process.env.baseUrl}/auth/register`,
+          user
+        );
+        this.message = data.message;
 
         this.signup = {};
+        this.is_login = true;
         this.loading = false;
       } catch (error) {
         this.loading = false;
         this.error = error;
+
         console.log("Error: ", error);
       }
     },

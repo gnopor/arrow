@@ -28,7 +28,7 @@ Vue.prototype.$__validateRegisterForm = form => {
 
 // ==> send images
 Vue.prototype.$__sendImage = (file, name) => {
-  const API_URL = `${process.env.baseUrl}/files/upload-file`;
+  const API_URL = `${process.env.baseUrl}/files/file`;
   const formData = new FormData();
   formData.append(`arrow-${name}`, file, file.name);
 
