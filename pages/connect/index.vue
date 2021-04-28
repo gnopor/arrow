@@ -194,8 +194,10 @@ export default {
         this.loading = false;
       } catch (error) {
         this.loading = false;
-        this.error = error;
-
+        this.error =
+          error.response && error.response.data
+            ? error.response.data.error
+            : error;
         console.log("Error: ", error);
       }
     },
