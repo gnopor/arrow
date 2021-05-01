@@ -14,9 +14,17 @@
           <div class="row">
             <div class="col-10 col-sm-7 col-md-6 col-lg-4 m-auto">
               <div class="login row g-3">
-                <InputField type="email" placeholder="Email" />
+                <InputField
+                  v-model="login.email"
+                  type="email"
+                  placeholder="Email"
+                />
 
-                <InputField type="password" placeholder="Password" />
+                <InputField
+                  v-model="login.password"
+                  type="password"
+                  placeholder="Password"
+                />
 
                 <div class="text-lg">
                   I want to
@@ -31,6 +39,7 @@
                 <button
                   class="btn text-white"
                   style="border: 1px solid white; text-transform: uppercase"
+                  @click="handleLogin"
                 >
                   login
                 </button>
@@ -208,14 +217,38 @@ export default {
 
         this.signup = {};
         this.is_login = true;
-        this.loading = false;
       } catch (error) {
-        this.loading = false;
         this.error =
           error.response && error.response.data
             ? error.response.data.error
             : error;
         console.log("Error: ", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async handleLogin() {
+      try {
+        this.loading = true;
+        const login_data = {
+          email: this.login.email,
+          password: this.login.password,
+        };
+        await this.$__validateLoginForm(login_data);
+
+        const { data } = await this.$auth.loginWith("local", {
+          data: login_data,
+        });
+        console.log(data);
+        debugger;
+      } catch (error) {
+        this.error =
+          error.response && error.response.data
+            ? error.response.data.error
+            : error;
+        console.log("Error: ", error);
+      } finally {
+        this.loading = false;
       }
     },
   },

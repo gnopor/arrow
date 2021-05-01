@@ -48,8 +48,28 @@ Vue.prototype.$__sendImage = (file, name) => {
   });
 };
 
+// ==> Validate Reset Password Form
 Vue.prototype.$__validateResetPasswordForm = email =>
   new Promise((resolve, reject) => {
     !validateEmail(email) && reject("Wrong Email address");
     resolve(email);
+  });
+
+// ==> Validate create new password form
+Vue.prototype.$__validateNewPasswordForm = (new_password, confirm_password) =>
+  new Promise((resolve, reject) => {
+    const password = new_password.toString().trim();
+    (password && password.length > 0) || reject("Enter new password");
+
+    password == confirm_password || reject("Your password are not the same");
+
+    resolve(password);
+  });
+
+Vue.prototype.$__validateLoginForm = ({ email, password }) =>
+  new Promise((resolve, reject) => {
+    !validateEmail(email) && reject("Enter a valid email address");
+    !password.toString().trim().length > 0 && reject("Enter a valid password");
+
+    resolve({ email, password });
   });
