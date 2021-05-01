@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="custom_input_field">
     <input
       :type="type"
       @input="$emit('input', $event.target.value)"

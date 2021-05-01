@@ -29,7 +29,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    "~/plugins/loadComponents.js",
+    // "~/plugins/loadComponents.js",
     "~/plugins/helpers.js",
     { src: "~/plugins/mdi-vue.client.js", mode: "client" },
     {
@@ -52,7 +52,7 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

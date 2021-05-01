@@ -34,6 +34,17 @@
                 >
                   login
                 </button>
+
+                <div class="">
+                  <span
+                    class="float-end text-white"
+                    style="text-decoration: underline; cursor: pointer"
+                    data-bs-toggle="modal"
+                    data-bs-target="#reset_password_modal"
+                  >
+                    I have forgot my password.
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -120,16 +131,22 @@
         </article>
       </div>
     </section>
+
+    <!-- modals  -->
+
+    <ResetPasswordModal id="reset_password_modal" />
+    <!-- /modals  -->
   </div>
 </template>
 
 <script>
 import { v4 as uuidv4 } from "uuid";
 import alert from "@/static/mixins/alert";
-import InputField from "../../components/UI/InputField.vue";
+import ResetPasswordModal from "@/components/UI/ResetPasswordModal";
+import InputField from "../../components/UI/InputField";
 export default {
   layout: "login",
-  components: { InputField },
+  components: { InputField, ResetPasswordModal },
   mixins: [alert],
   head() {
     return {

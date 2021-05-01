@@ -1,5 +1,11 @@
 import Vue from "vue";
 
+const validateEmail = email => {
+  return typeof email == "string"
+    ? email.match(/^\b[A-Za-z0-9_]+@[A-Za-z0-9_]+\.[A-Za-z0-9]+$/g)
+    : false;
+};
+
 // ==> validate Register form
 Vue.prototype.$__validateRegisterForm = form => {
   const fields = ["username", "email", "password", "confirm_password"];
@@ -17,10 +23,7 @@ Vue.prototype.$__validateRegisterForm = form => {
 
     (form.avatar && form.avatar.size) || reject(errors("avatar"));
 
-    !form.email
-      .trim()
-      .match(/^\b[A-Za-z0-9_]+@[A-Za-z0-9_]+\.[A-Za-z0-9]+$/g) &&
-      reject(errors("email"));
+    !validateEmail(form.email.trim()) && reject(errors("email"));
 
     resolve(form);
   });
@@ -44,3 +47,9 @@ Vue.prototype.$__sendImage = (file, name) => {
       .catch(err => reject(err));
   });
 };
+
+Vue.prototype.$__validateResetPasswordForm = email =>
+  new Promise((resolve, reject) => {
+    !validateEmail(email) && reject("Wrong Email address");
+    resolve(email);
+  });
