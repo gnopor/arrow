@@ -68,7 +68,7 @@ export default {
       login: "/connect",
       logout: "/",
       callback: false,
-      home: "/middleware"
+      home: false
     },
     strategies: {
       local: {

@@ -92,7 +92,7 @@ export default {
       this.box.scrollTo({ top: this.max_scroll, left: 0, behavior: "smooth" });
     },
     handleTest() {
-      this.test();
+      debugger;
     },
   },
 };

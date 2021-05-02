@@ -6,6 +6,21 @@ const validateEmail = email => {
     : false;
 };
 
+// ==> set user
+Vue.prototype.$__setUser = function(user) {
+  this.$auth.$storage.setCookie("user", user, { isJson: true });
+};
+
+// ==> get user
+Vue.prototype.$__getUser = function() {
+  return this.$auth.$storage.getCookie("user");
+};
+
+// ==> remove user
+Vue.prototype.$__removeUser = function() {
+  this.$auth.$storage.removeCookie("user", { isJson: true });
+};
+
 // ==> validate Register form
 Vue.prototype.$__validateRegisterForm = form => {
   const fields = ["username", "email", "password", "confirm_password"];

@@ -239,8 +239,10 @@ export default {
         const { data } = await this.$auth.loginWith("local", {
           data: login_data,
         });
-        console.log(data);
-        debugger;
+        // console.log(data);
+        await this.$__setUser(data.user);
+
+        this.$router.push("/middleware");
       } catch (error) {
         this.error =
           error.response && error.response.data

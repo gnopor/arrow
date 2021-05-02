@@ -18,6 +18,7 @@ export default {
     // init socket event parser
     this.initSocketToVuexParser();
   },
+  mounted() {},
   methods: {
     initSocketToVuexParser() {
       if (process.client) {
