@@ -12,42 +12,20 @@
       </div>
 
       <div class="contact_list">
-        <!-- <div class="room_card p-2">
-          <div class="avatar">
-            <img src="/images/avatar.png" alt="room title avatar" />
-          </div>
-          <div class="infos mx-2">
-            <span class="room_username">@room_name</span>
-            <span class="room_date">room creation date</span>
-          </div>
-
-          <div class="bell text-accent">
-            <client-only>
-              <mdicon name="bell" />
-            </client-only>
-          </div>
-        </div> -->
-
         <RoomCard
+          v-for="(profile, i) in users"
+          :key="i"
+          :room_name="profile.username"
+          :creation_date="profile._date_creation"
+          :avatar="profile.avatar"
+          show_bell
+        />
+        <!-- <RoomCard
           room_name="room_name"
           creation_date="room creation date"
           show_bell
-        />
-        <RoomCard
-          room_name="room_name"
-          creation_date="room creation date"
           active
-        />
-        <!-- 
-        <div data-active class="room_card p-2">
-          <div class="avatar">
-            <img src="/images/avatar.png" alt="room title avatar" />
-          </div>
-          <div class="infos mx-2">
-            <span class="room_username">@room_name</span>
-            <span class="room_date">room creation date</span>
-          </div>
-        </div> -->
+        /> -->
       </div>
     </section>
 
@@ -77,11 +55,33 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import RoomCard from "@/components/UI/RoomCard";
 export default {
   name: "SideMenu",
   components: {
     RoomCard,
+  },
+  data: () => ({
+    current_user: null,
+  }),
+  async created() {
+    // get current user info
+    this.current_user = await this.$__getUser();
+    if (!this.current_user._id) {
+      this.$auth.logout();
+    }
+
+    // init user list and room
+    if (this.users.length == 0) {
+      this.InitUsersAndRooms(this);
+    }
+  },
+  methods: {
+    ...mapActions("core", ["InitUsersAndRooms"]),
+  },
+  computed: {
+    ...mapState("core", ["users", "current_room"]),
   },
 };
 </script>

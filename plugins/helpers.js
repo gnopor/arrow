@@ -81,6 +81,7 @@ Vue.prototype.$__validateNewPasswordForm = (new_password, confirm_password) =>
     resolve(password);
   });
 
+// ==> validate Login form
 Vue.prototype.$__validateLoginForm = ({ email, password }) =>
   new Promise((resolve, reject) => {
     !validateEmail(email) && reject("Enter a valid email address");
@@ -88,3 +89,30 @@ Vue.prototype.$__validateLoginForm = ({ email, password }) =>
 
     resolve({ email, password });
   });
+
+// ==> formatDate
+Vue.prototype.$__formatDate = date_string => {
+  const days = ["Sun", "Mon", "Tus", "Wen", "Thu", "Fri", "Sat"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Agt",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+  const date = new Date(date_string);
+  const day_month = date.getDate();
+  const day_week = date.getDay();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  return `${days[day_week]}, ${day_month} ${months[month]} ${year}`;
+};

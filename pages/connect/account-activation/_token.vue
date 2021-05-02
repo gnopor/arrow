@@ -31,7 +31,10 @@ export default {
         this.message = result.data.message;
         this.$router.push("/connect");
       } catch (error) {
-        this.error = error;
+        this.error =
+          error.response && error.response.data
+            ? error.response.data.error
+            : error;
       } finally {
         this.loading = false;
       }

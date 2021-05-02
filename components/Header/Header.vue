@@ -22,10 +22,12 @@
       <!-- user infos  -->
       <div class="d-flex align-items-center text-white">
         <div class="row">
-          <span class="col d-none d-md-flex align-items-center">name</span>
+          <span class="col d-none d-md-flex align-items-center">
+            {{ current_user.username }}</span
+          >
           <img
             class="col"
-            src="/images/avatar.png"
+            :src="getAvatarURI"
             style="width: 70px; border-radius: 50%"
           />
         </div>
@@ -53,11 +55,22 @@ export default {
   },
   data: () => ({
     show_side_menu: false,
+    current_user: null,
   }),
+  created() {
+    // set current user
+    this.current_user = this.$__getUser();
+    if (!(this.current_user && this.current_user._id)) {
+      this.$auth.logout();
+    }
+  },
   computed: {
     getSideMenuHeight() {
       const height = this.$refs.app_header.clientHeight;
       return height;
+    },
+    getAvatarURI() {
+      return `${process.env.baseUrl}${this.current_user.avatar}`;
     },
   },
 };

@@ -2,13 +2,13 @@
   <article :ref="room_name" class="room_card p-2">
     <!-- avatar  -->
     <figure class="avatar">
-      <img src="/images/avatar.png" alt="room title avatar" />
+      <img :src="getAvatarURI" alt="room title avatar" />
     </figure>
 
     <!-- name and creation date  -->
     <div class="infos mx-2">
       <span class="room_username">@{{ room_name }}</span>
-      <span class="room_date">{{ creation_date }}</span>
+      <span class="room_date">{{ $__formatDate(creation_date) }}</span>
     </div>
 
     <!-- notification bell  -->
@@ -29,6 +29,10 @@ export default {
       required: true,
     },
     creation_date: {
+      type: String,
+      required: true,
+    },
+    avatar: {
       type: String,
       required: true,
     },
@@ -53,6 +57,11 @@ export default {
       } else {
         room.removeAttribute("data-active");
       }
+    },
+  },
+  computed: {
+    getAvatarURI() {
+      return `${process.env.baseUrl}${this.avatar}`;
     },
   },
 };
