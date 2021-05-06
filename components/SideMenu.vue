@@ -25,6 +25,8 @@
           creation_date="room creation date"
           show_bell
           active
+          connected
+
         /> -->
       </div>
     </section>
@@ -78,10 +80,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions("core", ["InitUsersAndRooms"]),
+    ...mapActions(["InitUsersAndRooms"]),
   },
   computed: {
-    ...mapState("core", ["users", "current_room"]),
+    ...mapState(["users", "current_room"]),
   },
 };
 </script>

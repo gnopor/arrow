@@ -75,7 +75,7 @@ export default {
     this.handleMessageBoxHeight();
   },
   methods: {
-    ...mapActions(["test"]),
+    ...mapActions(["alertOtherUser"]),
     handleMessageBoxHeight() {
       window.addEventListener("resize", (event) => this.updateHeight(this.box));
       this.updateHeight(this.box);
@@ -92,7 +92,7 @@ export default {
       this.box.scrollTo({ top: this.max_scroll, left: 0, behavior: "smooth" });
     },
     handleTest() {
-      console.log(this);
+      this.alertOtherUser("fake_id");
     },
   },
 };

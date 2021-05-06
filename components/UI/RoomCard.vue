@@ -11,12 +11,16 @@
       <span class="room_date">{{ $__formatDate(creation_date) }}</span>
     </div>
 
-    <!-- notification bell  -->
+    <!-- notificatoins  -->
+    <!-- bell notification   -->
     <div v-if="show_bell" class="bell text-accent">
       <client-only>
         <mdicon name="bell" />
       </client-only>
     </div>
+
+    <!-- user connected bell  -->
+    <i v-if="connected" class="bg-accent connected" />
   </article>
 </template>
 
@@ -44,10 +48,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    connected: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     // handle on focus
     this.handleFocus();
+
+    // handle connected user
+    this.handleConnectedUser();
   },
   methods: {
     handleFocus() {
@@ -56,6 +67,14 @@ export default {
         room.setAttribute("data-active", true);
       } else {
         room.removeAttribute("data-active");
+      }
+    },
+    handleConnectedUser() {
+      const room = this.$refs[this.room_name];
+      if (this.active) {
+        room.setAttribute("data-connected", true);
+      } else {
+        room.removeAttribute("data-connected");
       }
     },
   },
@@ -74,11 +93,6 @@ export default {
   cursor: pointer;
 }
 
-.room_card[data-active] {
-  background: var(--base);
-  color: var(--lg);
-}
-
 .room_card::before {
   position: absolute;
   top: 0;
@@ -89,6 +103,13 @@ export default {
   margin: auto;
 }
 
+/* --> active user  */
+.room_card[data-active] {
+  background: var(--base);
+  color: var(--lg);
+}
+
+/* --> avatar  */
 /* .room_card .avatar  */
 .room_card .avatar {
   position: relative;
@@ -112,6 +133,7 @@ export default {
   transform: scale(1.5);
 }
 
+/* --infos  */
 /* .room_card .infos  */
 .room_card .infos {
   display: flex;
@@ -124,10 +146,21 @@ export default {
   font-weight: bold;
 }
 
+/* --notification  */
 /* .room_card .bell  */
 .room_card .bell {
   position: absolute;
   right: 10px;
   transform: rotate(22deg);
+}
+
+/* .room_card .connected  */
+.room_card .connected {
+  position: absolute;
+  left: 1em;
+  display: block;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
 }
 </style>
