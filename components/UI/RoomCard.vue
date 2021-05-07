@@ -1,5 +1,5 @@
 <template>
-  <article :ref="room_name" class="room_card p-2">
+  <article :ref="room._id" class="room_card p-2" @click="handleFocus">
     <!-- avatar  -->
     <figure class="avatar">
       <img :src="getAvatarURI" alt="room title avatar" />
@@ -7,8 +7,8 @@
 
     <!-- name and creation date  -->
     <div class="infos mx-2">
-      <span class="room_username">@{{ room_name }}</span>
-      <span class="room_date">{{ $__formatDate(creation_date) }}</span>
+      <span class="room_username">@{{ room.username }}</span>
+      <span class="room_date">{{ $__formatDate(room._date_creation) }}</span>
     </div>
 
     <!-- notificatoins  -->
@@ -20,54 +20,38 @@
     </div>
 
     <!-- user connected bell  -->
-    <i v-if="connected" class="bg-accent connected" />
+    <i v-if="new_user_id == room._id" class="bg-accent connected" />
   </article>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "RoomCard",
   props: {
-    room_name: {
-      type: String,
+    room: {
+      type: Object,
       required: true,
     },
-    creation_date: {
-      type: String,
-      required: true,
-    },
-    avatar: {
-      type: String,
-      required: true,
-    },
-    show_bell: {
-      type: Boolean,
-      default: false,
-    },
-    active: {
-      type: Boolean,
-      default: false,
-    },
-    connected: {
+    group: {
       type: Boolean,
       default: false,
     },
   },
-  mounted() {
-    // handle on focus
-    this.handleFocus();
-
-    // handle connected user
-    this.handleConnectedUser();
+  data: () => ({
+    show_bell: true,
+  }),
+  created() {
+    console.log(this.room._id);
   },
   methods: {
     handleFocus() {
-      const room = this.$refs[this.room_name];
-      if (this.active) {
-        room.setAttribute("data-active", true);
-      } else {
-        room.removeAttribute("data-active");
-      }
+      const room = this.$refs[this.room._id];
+      document
+        .querySelectorAll(".room_card[data-active]")
+        .forEach((room) => room.removeAttribute("data-active"));
+
+      room.setAttribute("data-active", true);
     },
     handleConnectedUser() {
       const room = this.$refs[this.room_name];
@@ -79,8 +63,9 @@ export default {
     },
   },
   computed: {
+    ...mapState(["new_user_id"]),
     getAvatarURI() {
-      return `${process.env.baseUrl}${this.avatar}`;
+      return `${process.env.baseUrl}${this.room.avatar}`;
     },
   },
 };
@@ -117,6 +102,7 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
+  margin: 0;
   max-height: 4em;
   max-width: 4em;
   overflow: hidden;

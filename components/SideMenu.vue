@@ -11,24 +11,15 @@
         <span class="mx-2"> Contacts </span>
       </div>
 
-      <div class="contact_list">
-        <RoomCard
-          v-for="(profile, i) in users"
-          :key="i"
-          :room_name="profile.username"
-          :creation_date="profile._date_creation"
-          :avatar="profile.avatar"
-          show_bell
-        />
+      <div v-if="users.length" class="contact_list">
+        <RoomCard v-for="(profile, i) in users" :key="i" :room="profile" />
         <!-- <RoomCard
           room_name="room_name"
           creation_date="room creation date"
-          show_bell
-          active
-          connected
-
+    
         /> -->
       </div>
+      <span v-else> loading ... </span>
     </section>
 
     <!-- group   rooms-->

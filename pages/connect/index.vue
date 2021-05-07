@@ -149,6 +149,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import { v4 as uuidv4 } from "uuid";
 import alert from "@/static/mixins/alert";
 import ResetPasswordModal from "@/components/UI/ResetPasswordModal";
@@ -168,6 +169,7 @@ export default {
     login: {},
   }),
   methods: {
+    ...mapActions(["alertOtherUser"]),
     handleSwitchConnect() {
       this.is_login = !this.is_login;
     },
@@ -239,7 +241,7 @@ export default {
         const { data } = await this.$auth.loginWith("local", {
           data: login_data,
         });
-        // console.log(data);
+        await this.alertOtherUser(data.user._id);
         await this.$__setUser(data.user);
 
         this.$router.push("/middleware");

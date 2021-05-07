@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import MessageCard from "@/components/UI/MessageCard";
 export default {
   name: "MessageWrapper",
@@ -75,7 +74,6 @@ export default {
     this.handleMessageBoxHeight();
   },
   methods: {
-    ...mapActions(["alertOtherUser"]),
     handleMessageBoxHeight() {
       window.addEventListener("resize", (event) => this.updateHeight(this.box));
       this.updateHeight(this.box);
@@ -91,9 +89,7 @@ export default {
       // this.box.scrollTo(0, this.max_scroll);
       this.box.scrollTo({ top: this.max_scroll, left: 0, behavior: "smooth" });
     },
-    handleTest() {
-      this.alertOtherUser("fake_id");
-    },
+    handleTest() {},
   },
 };
 </script>
