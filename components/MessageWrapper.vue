@@ -1,5 +1,5 @@
 <template>
-  <div id="message_wrapper" class="bg-lg">
+  <div v-if="current_room" id="message_wrapper" class="bg-lg">
     <!-- message box  -->
     <section class="messages_box">
       <MessageCard />
@@ -40,9 +40,16 @@
       </button>
     </section>
   </div>
+  <div v-else class="h-100 d-flex justify-content-center align-items-center">
+    <div class="d-flex flex-column align-items-center">
+      <img src="/images/logo2.png" alt="arrow logo" />
+      <span>Start by choosing one from the left panel:)</span>
+    </div>
+  </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import MessageCard from "@/components/UI/MessageCard";
 export default {
   name: "MessageWrapper",
@@ -56,22 +63,24 @@ export default {
   }),
   mounted() {
     // query DOM
-    this.box = document.querySelector(".messages_box");
-    this.$nextTick(() => {
-      this.box.scrollTo(0, this.box.scrollHeight);
-    });
+    if (this.current_room) {
+      this.box = document.querySelector(".messages_box");
+      this.$nextTick(() => {
+        this.box.scrollTo(0, this.box.scrollHeight);
+      });
 
-    // handle box scroll event
-    this.box.addEventListener("scroll", (event) => {
-      const scroll = event.target.scrollTop;
-      this.show_scroll_down = scroll < this.max_scroll;
-      if (scroll > this.max_scroll) {
-        this.max_scroll = scroll;
-      }
-    });
+      // handle box scroll event
+      this.box.addEventListener("scroll", (event) => {
+        const scroll = event.target.scrollTop;
+        this.show_scroll_down = scroll < this.max_scroll;
+        if (scroll > this.max_scroll) {
+          this.max_scroll = scroll;
+        }
+      });
 
-    // handle box height
-    this.handleMessageBoxHeight();
+      // handle box height
+      this.handleMessageBoxHeight();
+    }
   },
   methods: {
     handleMessageBoxHeight() {
@@ -90,6 +99,9 @@ export default {
       this.box.scrollTo({ top: this.max_scroll, left: 0, behavior: "smooth" });
     },
     handleTest() {},
+  },
+  computed: {
+    ...mapState(["current_room"]),
   },
 };
 </script>

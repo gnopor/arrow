@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "RoomCard",
   props: {
@@ -41,10 +41,8 @@ export default {
   data: () => ({
     show_bell: true,
   }),
-  created() {
-    console.log(this.room._id);
-  },
   methods: {
+    ...mapActions(["setCurrentRoom"]),
     handleFocus() {
       const room = this.$refs[this.room._id];
       document
@@ -52,14 +50,7 @@ export default {
         .forEach((room) => room.removeAttribute("data-active"));
 
       room.setAttribute("data-active", true);
-    },
-    handleConnectedUser() {
-      const room = this.$refs[this.room_name];
-      if (this.active) {
-        room.setAttribute("data-connected", true);
-      } else {
-        room.removeAttribute("data-connected");
-      }
+      this.setCurrentRoom("test");
     },
   },
   computed: {

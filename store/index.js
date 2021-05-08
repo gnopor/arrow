@@ -17,6 +17,9 @@ export const mutations = {
   },
   setUsers(store, users) {
     store.users = users;
+  },
+  setCurrentRoom(state, room) {
+    state.current_room = room;
   }
 };
 
@@ -32,7 +35,10 @@ export const actions = {
       })
       .catch(err => console.log("Error:", err));
   },
-  alertOtherUser({ dispatch }, user_id) {
+  alertOtherUser(context, user_id) {
     this.$socket.emit("new_user", user_id);
+  },
+  setCurrentRoom({ commit }, data) {
+    commit("setCurrentRoom", data);
   }
 };
