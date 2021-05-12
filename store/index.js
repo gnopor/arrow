@@ -24,21 +24,29 @@ export const mutations = {
 };
 
 export const actions = {
-  InitUsersAndRooms({ commit }, _this) {
-    _this.$axios
-      .get(`${process.env.baseUrl}/auth/user`)
-      .then(({ data }) => {
-        const filtered_data = data.filter(
-          user => user._id != _this.$__getUser()._id
-        );
-        commit("setUsers", filtered_data);
-      })
-      .catch(err => console.log("Error:", err));
+  async InitUsersAndRooms({ commit }, _this) {
+    try {
+      // get users
+      const { data } = await _this.$axios.get(
+        `${process.env.baseUrl}/auth/user`
+      );
+      const filtered_data = data.filter(
+        user => user._id != _this.$__getUser()._id
+      );
+      commit("setUsers", filtered_data);
+
+      // TODOS: init rooms
+    } catch (err) {
+      console.log("Error:", err);
+    }
   },
   alertOtherUser(context, user_id) {
     this.$socket.emit("new_user", user_id);
   },
-  setCurrentRoom({ commit }, data) {
+  setCurrentRoom({ commit }, { is_group, room }) {
+    // TODO: if is_groupt == true, just set the group
+    // if not, filter and set the room
+    // or create and set the room
     commit("setCurrentRoom", data);
   }
 };
