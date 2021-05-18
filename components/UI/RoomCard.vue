@@ -45,17 +45,17 @@ export default {
     ...mapActions(["setCurrentRoom"]),
     handleFocus() {
       // get focus
+      this.getFocus();
+
+      // set current room
+      this.setCurrentRoom({ data: { ...this.room }, _this: this });
+    },
+    getFocus() {
       const room = this.$refs[this.room._id];
       document
         .querySelectorAll(".room_card[data-active]")
         .forEach((room) => room.removeAttribute("data-active"));
       room.setAttribute("data-active", true);
-
-      // set current room
-      this.setCurrentRoom({
-        is_group: !!this.room.is_group,
-        room: { ...this.room },
-      });
     },
   },
   computed: {

@@ -40,13 +40,32 @@ export const actions = {
       console.log("Error:", err);
     }
   },
-  alertOtherUser(context, user_id) {
+  alertOtherUser(_, user_id) {
     this.$socket.emit("new_user", user_id);
   },
-  setCurrentRoom({ commit }, { is_group, room }) {
-    // TODO: if is_groupt == true, just set the group
-    // if not, filter and set the room
-    // or create and set the room
-    commit("setCurrentRoom", data);
+  setCurrentRoom({ commit, dispatch, state }, { data, _this }) {
+    // handle group
+    if (data.is_group) {
+      return commit("setCurrentRoom", data);
+    }
+
+    // handle single chat
+    const user = _this.$__getUser();
+    const current_room = state.rooms.find(
+      room =>
+        !room.is_group &&
+        ((room.users[0] == data._id && room.users[1] == user._id) ||
+          (room.users[1] == data._id && room.users[0] == user._id))
+    );
+
+    (current_room && current_room._id && commit("setCurrenRoom", data)) ||
+      dispatch("createRoom", {
+        id_admin: user._id,
+        users: [user._id, data._id],
+        is_group: false
+      });
+  },
+  createRoom(_, data) {
+    this.$socket.emit("new_room", data);
   }
 };
