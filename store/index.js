@@ -1,16 +1,20 @@
 export const state = () => ({
   current_room: null,
-  new_user_id: "",
+  new_user_id: null,
+  new_error: null,
   rooms: [],
   users: []
 });
 
 export const mutations = {
-  SOCKET_addRoom(store, data) {
-    console.log(data);
+  SOCKET_new_room(store, room) {
+    store.rooms = [...rooms, room];
   },
   SOCKET_new_user(store, id) {
     store.new_user_id = id;
+  },
+  setNewError(store, error) {
+    store.new_error = error;
   },
   setRooms(store, rooms) {
     store.rooms = rooms;
@@ -24,20 +28,25 @@ export const mutations = {
 };
 
 export const actions = {
+  SOCKET_set_new_error({ commit }, error) {
+    commit("setNewError", error);
+  },
   async InitUsersAndRooms({ commit }, _this) {
     try {
       // get users
-      const { data } = await _this.$axios.get(
-        `${process.env.baseUrl}/auth/user`
-      );
-      const filtered_data = data.filter(
+      const users = await _this.$axios.get(`${process.env.baseUrl}/auth/user`);
+      const filtered_data = users.data.filter(
         user => user._id != _this.$__getUser()._id
       );
       commit("setUsers", filtered_data);
 
-      // TODOS: init rooms
+      // get rooms
+      const rooms = await _this.$axios.get(`${process.env.baseUrl}/core/room`);
+      commit("setRooms", rooms.data);
+
+      return Promise.resolve();
     } catch (err) {
-      console.log("Error:", err);
+      return Promise.reject(err);
     }
   },
   alertOtherUser(_, user_id) {

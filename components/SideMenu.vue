@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import RoomCard from "@/components/UI/RoomCard";
 export default {
   name: "SideMenu",
@@ -64,17 +64,9 @@ export default {
     if (!this.current_user._id) {
       this.$auth.logout();
     }
-
-    // init user list and room
-    if (this.users.length == 0) {
-      this.InitUsersAndRooms(this);
-    }
-  },
-  methods: {
-    ...mapActions(["InitUsersAndRooms"]),
   },
   computed: {
-    ...mapState(["users", "current_room"]),
+    ...mapState(["users"]),
   },
 };
 </script>

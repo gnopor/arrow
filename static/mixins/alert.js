@@ -45,7 +45,7 @@ export default {
                 <button id="custom_close_alert" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                ${this.error ? this.error : this.message}
+                ${this.error ? this.formatedError : this.message}
               </div>
             </div>
           </div>
@@ -79,6 +79,11 @@ export default {
 
       this.spinner = spinner;
       document.querySelector("body").appendChild(this.spinner);
+    }
+  },
+  computed: {
+    formatedError() {
+      return this.error.response.data.error || this.error;
     }
   }
 };
