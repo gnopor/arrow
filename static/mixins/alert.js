@@ -83,7 +83,9 @@ export default {
   },
   computed: {
     formatedError() {
-      return this.error.response.data.error || this.error;
+      return (
+        (this.error.response && this.error.response.data.error) || this.error
+      );
     }
   }
 };

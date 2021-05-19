@@ -8,7 +8,8 @@ export const state = () => ({
 
 export const mutations = {
   SOCKET_new_room(store, room) {
-    store.rooms = [...rooms, room];
+    debugger;
+    store.rooms = [...store.rooms, room];
   },
   SOCKET_new_user(store, id) {
     store.new_user_id = id;
@@ -23,6 +24,7 @@ export const mutations = {
     store.users = users;
   },
   setCurrentRoom(state, room) {
+    debugger;
     state.current_room = room;
   }
 };
@@ -35,10 +37,7 @@ export const actions = {
     try {
       // get users
       const users = await _this.$axios.get(`${process.env.baseUrl}/auth/user`);
-      const filtered_data = users.data.filter(
-        user => user._id != _this.$__getUser()._id
-      );
-      commit("setUsers", filtered_data);
+      commit("setUsers", users.data);
 
       // get rooms
       const rooms = await _this.$axios.get(`${process.env.baseUrl}/core/room`);
@@ -67,12 +66,15 @@ export const actions = {
           (room.users[1] == data._id && room.users[0] == user._id))
     );
 
-    (current_room && current_room._id && commit("setCurrenRoom", data)) ||
+    if (current_room && current_room._id) {
+      commit("setCurrentRoom", current_room);
+    } else {
       dispatch("createRoom", {
         id_admin: user._id,
         users: [user._id, data._id],
         is_group: false
       });
+    }
   },
   createRoom(_, data) {
     this.$socket.emit("new_room", data);

@@ -11,15 +11,14 @@
         <span class="mx-2"> Contacts </span>
       </div>
 
-      <div v-if="users.length" class="contact_list">
-        <RoomCard v-for="(profile, i) in users" :key="i" :room="profile" />
+      <div class="contact_list">
+        <RoomCard v-for="(room, i) in chatRoom" :key="i" :room="room" />
         <!-- <RoomCard
           room_name="room_name"
           creation_date="room creation date"
     
         /> -->
       </div>
-      <span v-else> loading ... </span>
     </section>
 
     <!-- group   rooms-->
@@ -56,7 +55,7 @@ export default {
     RoomCard,
   },
   data: () => ({
-    current_user: null,
+    current_user: {},
   }),
   async created() {
     // get current user info
@@ -67,6 +66,9 @@ export default {
   },
   computed: {
     ...mapState(["users"]),
+    chatRoom() {
+      return this.users.filter((user) => user._id != this.current_user._id);
+    },
   },
 };
 </script>
