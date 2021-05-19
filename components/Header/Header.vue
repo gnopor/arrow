@@ -1,5 +1,5 @@
 <template>
-  <header ref="app_header" class="bg-base py-3">
+  <header v-if="current_user" ref="app_header" class="bg-base py-3">
     <nav class="container d-flex justify-content-between">
       <!-- menu  -->
       <div class="d-flex d-md-none align-items-center text-white">
@@ -23,8 +23,8 @@
       <div class="d-flex align-items-center text-white">
         <div class="row">
           <span class="col d-none d-md-flex align-items-center">
-            {{ current_user.username }}</span
-          >
+            {{ current_user.username }}
+          </span>
           <img
             class="col"
             :src="getAvatarURI"

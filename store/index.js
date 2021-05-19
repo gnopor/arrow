@@ -7,24 +7,22 @@ export const state = () => ({
 });
 
 export const mutations = {
-  SOCKET_new_room(store, room) {
-    debugger;
-    store.rooms = [...store.rooms, room];
+  SOCKET_new_room(state, room) {
+    state.rooms = [...state.rooms, room];
   },
-  SOCKET_new_user(store, id) {
-    store.new_user_id = id;
+  SOCKET_new_user(state, id) {
+    state.new_user_id = id;
   },
-  setNewError(store, error) {
-    store.new_error = error;
+  setNewError(state, error) {
+    state.new_error = error;
   },
-  setRooms(store, rooms) {
-    store.rooms = rooms;
+  setRooms(state, rooms) {
+    state.rooms = rooms;
   },
-  setUsers(store, users) {
-    store.users = users;
+  setUsers(state, users) {
+    state.users = users;
   },
   setCurrentRoom(state, room) {
-    debugger;
     state.current_room = room;
   }
 };

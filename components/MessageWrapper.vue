@@ -1,7 +1,7 @@
 <template>
   <div v-if="current_room" id="message_wrapper" class="bg-lg">
     <!-- message box  -->
-    <section class="messages_box">
+    <section ref="messages_box" class="messages_box">
       <MessageCard />
       <MessageCard current_user />
       <MessageCard />
@@ -21,7 +21,7 @@
         />
       </div>
 
-      <button @click="handleTest">
+      <button>
         <client-only>
           <mdicon name="send" />
         </client-only>
@@ -57,19 +57,27 @@ export default {
     MessageCard,
   },
   data: () => ({
-    show_scroll_down: false,
+    show_scroll_down: true,
     max_scroll: 0,
     box: null,
   }),
+  watch: {
+    current_room() {
+      if (this.current_room) {
+        this.$nextTick(() => this.initMessageBox());
+      }
+    },
+  },
   mounted() {
-    // query DOM
     if (this.current_room) {
+      this.$nextTick(() => this.initMessageBox());
+    }
+  },
+  methods: {
+    initMessageBox() {
       this.box = document.querySelector(".messages_box");
-      this.$nextTick(() => {
-        this.box.scrollTo(0, this.box.scrollHeight);
-      });
 
-      // handle box scroll event
+      // handle messages_box scroll event
       this.box.addEventListener("scroll", (event) => {
         const scroll = event.target.scrollTop;
         this.show_scroll_down = scroll < this.max_scroll;
@@ -77,13 +85,11 @@ export default {
           this.max_scroll = scroll;
         }
       });
+      this.$nextTick(() => {
+        this.box.scrollTo(0, this.box.scrollHeight);
+      });
 
       // handle box height
-      this.handleMessageBoxHeight();
-    }
-  },
-  methods: {
-    handleMessageBoxHeight() {
       window.addEventListener("resize", (event) => this.updateHeight(this.box));
       this.updateHeight(this.box);
     },
@@ -92,13 +98,12 @@ export default {
       const input = document.querySelector(".message_input");
       const outer_height = header.clientHeight + input.clientHeight;
       const height = window.innerHeight - outer_height;
+
       box.style.maxHeight = `${height}px`;
     },
     scrollToDown() {
-      // this.box.scrollTo(0, this.max_scroll);
       this.box.scrollTo({ top: this.max_scroll, left: 0, behavior: "smooth" });
     },
-    handleTest() {},
   },
   computed: {
     ...mapState(["current_room"]),
