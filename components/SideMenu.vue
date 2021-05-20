@@ -35,12 +35,13 @@
       <div class="group_list">group list</div>
 
       <div class="new_group title">
-        <span>
+        <AddGroupRoom />
+        <!-- <span>
           <client-only>
             <mdicon name="accountMultiplePlus" />
           </client-only>
         </span>
-        <span class="mx-2"> New Group </span>
+        <span class="mx-2"> New Group </span> -->
       </div>
     </section>
   </aside>
@@ -49,10 +50,13 @@
 <script>
 import { mapState } from "vuex";
 import RoomCard from "@/components/UI/RoomCard";
+import AddGroupRoom from "@/components/AddGroupRoom";
+
 export default {
   name: "SideMenu",
   components: {
     RoomCard,
+    AddGroupRoom,
   },
   data: () => ({
     current_user: {},
@@ -99,21 +103,5 @@ export default {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-}
-
-/* #side_menu > section .room_card */
-
-/* ==> */
-/* contact_rooms  */
-#contact_rooms {
-}
-
-/* ==> */
-/* group_rooms  */
-#group_rooms {
-}
-
-#group_rooms > .new_group {
-  cursor: pointer;
 }
 </style>
