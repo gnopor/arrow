@@ -7,8 +7,10 @@
 
     <!-- name and creation date  -->
     <div class="infos mx-2">
-      <span class="room_username">@{{ room.username }}</span>
-      <span class="room_date">{{ $__formatDate(room._date_creation) }}</span>
+      <span class="room_username">@{{ room.username || room.title }}</span>
+      <span class="room_date">{{
+        $__formatDate(room._date_creation || room.date_creation)
+      }}</span>
     </div>
 
     <!-- notificatoins  -->

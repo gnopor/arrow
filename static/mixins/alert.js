@@ -10,6 +10,8 @@ export default {
   }),
   watch: {
     loading() {
+      console.log(this.loading);
+
       if (this.loading) {
         return this.showLoading();
       }
@@ -40,7 +42,7 @@ export default {
             <div class="modal-content bg-accent text-white">
               <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">${
-                  this.error ? "Erreur" : "Message"
+                  this.error ? "Error" : "Message"
                 }</h5>
                 <button id="custom_close_alert" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
@@ -76,6 +78,7 @@ export default {
       spinner.style.position = "fixed";
       spinner.style.top = "50vh";
       spinner.style.left = "50vw";
+      spinner.style.zIndex = "200";
 
       this.spinner = spinner;
       document.querySelector("body").appendChild(this.spinner);

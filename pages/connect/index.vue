@@ -153,10 +153,9 @@ import { mapActions } from "vuex";
 import { v4 as uuidv4 } from "uuid";
 import alert from "@/static/mixins/alert";
 import ResetPasswordModal from "@/components/UI/ResetPasswordModal";
-import InputField from "../../components/UI/InputField";
 export default {
   layout: "login",
-  components: { InputField, ResetPasswordModal },
+  components: { ResetPasswordModal },
   mixins: [alert],
   head() {
     return {

@@ -1,5 +1,5 @@
 <template>
-  <aside id="side_menu" class="bg-lg h-100">
+  <aside v-if="current_user._id" id="side_menu" class="bg-lg h-100">
     <!-- contact rooms -->
     <section id="contact_rooms">
       <div class="title">
@@ -13,11 +13,6 @@
 
       <div class="contact_list">
         <RoomCard v-for="(room, i) in chatRoom" :key="i" :room="room" />
-        <!-- <RoomCard
-          room_name="room_name"
-          creation_date="room creation date"
-    
-        /> -->
       </div>
     </section>
 
@@ -32,16 +27,12 @@
         <span class="mx-2"> Groups </span>
       </div>
 
-      <div class="group_list">group list</div>
+      <div class="group_list">
+        <RoomCard v-for="(room, i) in groupRoom" :key="i" :room="room" />
+      </div>
 
-      <div class="new_group title">
-        <AddGroupRoom />
-        <!-- <span>
-          <client-only>
-            <mdicon name="accountMultiplePlus" />
-          </client-only>
-        </span>
-        <span class="mx-2"> New Group </span> -->
+      <div class="new_group">
+        <AddGroupRoom v-if="current_user._id" :user="current_user" />
       </div>
     </section>
   </aside>
@@ -69,9 +60,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(["users"]),
+    ...mapState(["users", "rooms"]),
     chatRoom() {
       return this.users.filter((user) => user._id != this.current_user._id);
+    },
+    groupRoom() {
+      return this.rooms.filter((room) => room.is_group);
     },
   },
 };

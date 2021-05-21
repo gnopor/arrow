@@ -116,3 +116,17 @@ Vue.prototype.$__formatDate = date_string => {
 
   return `${days[day_week]}, ${day_month} ${months[month]} ${year}`;
 };
+
+// ==> validate add groupe form
+Vue.prototype.$__validateAddGroupRoomForm = form =>
+  new Promise((resolve, reject) => {
+    // title
+    const title = form.title.toString().trim();
+    !title && reject("Enter group's name");
+    !title.match(/^\b[A-Za-z0-9 ]+$/g) &&
+      reject("Group's name must containt only alphanumeric characters");
+    //  avatar
+    !(form.avatar && form.avatar.size) && reject("Add Group's Avatar");
+
+    resolve();
+  });
