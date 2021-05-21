@@ -3,12 +3,12 @@
     <div class="row h-100">
       <!-- side menu  -->
       <section class="d-none d-md-flex col-md-4" id="side_menu_container">
-        <SideMenu />
+        <SideMenu v-if="current_user._id" :user="current_user" />
       </section>
 
       <!-- message container  -->
       <section class="col-12 col-md-6" id="message_container">
-        <MessageWrapper />
+        <MessageWrapper v-if="current_user._id" :user="current_user" />
       </section>
     </div>
   </div>
@@ -21,6 +21,16 @@ export default {
   components: {
     MessageWrapper,
     SideMenu,
+  },
+  data: () => ({
+    current_user: {},
+  }),
+  async created() {
+    // set current user
+    this.current_user = await this.$__getUser();
+    if (!(this.current_user && this.current_user._id)) {
+      this.$auth.logout();
+    }
   },
 };
 </script>

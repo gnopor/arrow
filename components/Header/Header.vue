@@ -41,7 +41,7 @@
       class="d-md-none"
       :style="`height: calc(100vh - ${getSideMenuHeight}px)`"
     >
-      <SideMenu />
+      <SideMenu v-if="current_user._id" :user="current_user" />
     </div>
   </header>
 </template>
@@ -57,9 +57,9 @@ export default {
     show_side_menu: false,
     current_user: null,
   }),
-  created() {
+  async created() {
     // set current user
-    this.current_user = this.$__getUser();
+    this.current_user = await this.$__getUser();
     if (!(this.current_user && this.current_user._id)) {
       this.$auth.logout();
     }

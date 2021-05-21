@@ -49,15 +49,17 @@ export default {
     RoomCard,
     AddGroupRoom,
   },
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   data: () => ({
     current_user: {},
   }),
-  async created() {
-    // get current user info
-    this.current_user = await this.$__getUser();
-    if (!this.current_user._id) {
-      this.$auth.logout();
-    }
+  created() {
+    this.current_user = this.user;
   },
   computed: {
     ...mapState(["users", "rooms"]),

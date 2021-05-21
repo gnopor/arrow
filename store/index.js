@@ -2,6 +2,7 @@ export const state = () => ({
   current_room: null,
   new_user_id: null,
   new_error: null,
+  user_writing_alert: null,
   rooms: [],
   users: []
 });
@@ -12,6 +13,9 @@ export const mutations = {
   },
   SOCKET_new_user(state, id) {
     state.new_user_id = id;
+  },
+  SOCKET_new_writing(state, data) {
+    state.user_writing_alert = data;
   },
   setNewError(state, error) {
     state.new_error = error;
@@ -76,5 +80,16 @@ export const actions = {
   },
   createRoom(_, data) {
     this.$socket.emit("new_room", data);
+  },
+  createWritingAlert({ state, commit }, { user, is_writing }) {
+    let alert = null;
+    if (is_writing) {
+      alert = {
+        user,
+        id_room: state.current_room._id
+      };
+    }
+
+    this.$socket.emit("new_writing", alert);
   }
 };

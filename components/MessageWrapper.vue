@@ -8,6 +8,11 @@
       <MessageCard current_user />
       <MessageCard />
       <MessageCard current_user />
+
+      <!-- user typing alert  -->
+      <span v-if="isNewWritingAlert" id="user_typing_alert"
+        >@{{ user_writing_alert.user.username }} is writing a message...
+      </span>
     </section>
 
     <!-- message input  -->
@@ -15,7 +20,8 @@
       <div class="custom_input">
         <span ref="resizer" id="resizer" />
         <textarea
-          @input="$refs.resizer.innerText = $refs.message_input.value"
+          @input="handleMessageInput"
+          @blur="handleCreateTypingAlert(false)"
           ref="message_input"
           placeholder="Enter your message here..."
         />
@@ -49,17 +55,21 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import MessageCard from "@/components/UI/MessageCard";
 export default {
   name: "MessageWrapper",
   components: {
     MessageCard,
   },
+  props: {
+    user: { type: Object },
+  },
   data: () => ({
     show_scroll_down: true,
     max_scroll: 0,
     box: null,
+    current_user: null,
   }),
   watch: {
     current_room() {
@@ -74,6 +84,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["createWritingAlert"]),
     initMessageBox() {
       this.box = document.querySelector(".messages_box");
 
@@ -104,9 +115,30 @@ export default {
     scrollToDown() {
       this.box.scrollTo({ top: this.max_scroll, left: 0, behavior: "smooth" });
     },
+    handleMessageInput() {
+      this.$refs.resizer.innerText = this.$refs.message_input.value;
+      this.handleCreateTypingAlert(true);
+    },
+    handleCreateTypingAlert(is_user_writing) {
+      const param = {
+        user: this.user,
+        is_writing: is_user_writing,
+      };
+
+      this.createWritingAlert(param);
+    },
   },
   computed: {
-    ...mapState(["current_room"]),
+    ...mapState(["current_room", "user_writing_alert"]),
+    isNewWritingAlert() {
+      const alert = this.user_writing_alert;
+      return (
+        this.current_room._id &&
+        alert &&
+        alert.id_room == this.current_room._id &&
+        alert.user._id != this.user._id
+      );
+    },
   },
 };
 </script>
@@ -124,7 +156,32 @@ export default {
 .messages_box {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* .messages_box user_typing_alert  */
+#user_typing_alert {
+  text-align: center;
+  font-style: italic;
+  text-decoration: underline;
+  font-size: 0.9em;
+  padding: 5px;
+  color: #333;
+  animation: user_typing_alert 2s ease infinite;
+}
+@keyframes user_typing_alert {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* message_input  */

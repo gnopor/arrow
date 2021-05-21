@@ -10,8 +10,6 @@ export default {
   }),
   watch: {
     loading() {
-      console.log(this.loading);
-
       if (this.loading) {
         return this.showLoading();
       }
