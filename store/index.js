@@ -3,6 +3,7 @@ export const state = () => ({
   new_user_id: null,
   new_error: null,
   user_writing_alert: null,
+  new_message_alert: {},
   rooms: [],
   users: []
 });
@@ -23,17 +24,29 @@ export const mutations = {
   setRooms(state, rooms) {
     state.rooms = rooms;
   },
+  SOCKET_new_message(state, { message, id_room }) {
+    const index = state.rooms.findIndex(room => room._id == id_room);
+    state.rooms[index].messages.push(message);
+  },
   setUsers(state, users) {
     state.users = users;
   },
   setCurrentRoom(state, room) {
     state.current_room = room;
+  },
+  setNewMessageAlert(state, alert) {
+    state.new_message_alert = alert;
   }
 };
 
 export const actions = {
   SOCKET_set_new_error({ commit }, error) {
     commit("setNewError", error);
+  },
+  SOCKET_new_message_alert({ commit, state }, { id_sender, id_room }) {
+    const room = state.rooms.find(room => room._id == id_room);
+    const alert = { room, id_sender };
+    commit("setNewMessageAlert", alert);
   },
   async InitUsersAndRooms({ commit }, _this) {
     try {
@@ -53,14 +66,13 @@ export const actions = {
   alertOtherUser(_, user_id) {
     this.$socket.emit("new_user", user_id);
   },
-  setCurrentRoom({ commit, dispatch, state }, { data, _this }) {
+  setCurrentRoom({ commit, dispatch, state }, { data, user }) {
     // handle group
     if (data.is_group) {
       return commit("setCurrentRoom", data);
     }
 
     // handle single chat
-    const user = _this.$__getUser();
     const current_room = state.rooms.find(
       room =>
         !room.is_group &&
@@ -91,5 +103,11 @@ export const actions = {
     }
 
     this.$socket.emit("new_writing", alert);
+  },
+  addNewMessage(_, data) {
+    this.$socket.emit("new_message", data);
   }
+  // getUser({ state }, id) {
+  //   return state.users.find(user => user._id == id);
+  // }
 };

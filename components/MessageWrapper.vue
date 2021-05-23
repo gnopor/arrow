@@ -2,12 +2,13 @@
   <div v-if="current_room" id="message_wrapper" class="bg-lg">
     <!-- message box  -->
     <section ref="messages_box" class="messages_box">
-      <MessageCard />
-      <MessageCard current_user />
-      <MessageCard />
-      <MessageCard current_user />
-      <MessageCard />
-      <MessageCard current_user />
+      <MessageCard
+        v-for="(message, i) in current_room.messages"
+        :key="i"
+        :message="message"
+        :sender="loaded_users[message.id_sender]"
+        :current_user="message.id_sender == user._id"
+      />
 
       <!-- user typing alert  -->
       <span v-if="isNewWritingAlert" id="user_typing_alert"
@@ -22,12 +23,13 @@
         <textarea
           @input="handleMessageInput"
           @blur="handleCreateTypingAlert(false)"
+          v-model="text"
           ref="message_input"
           placeholder="Enter your message here..."
         />
       </div>
 
-      <button>
+      <button @click="handleAddMessage">
         <client-only>
           <mdicon name="send" />
         </client-only>
@@ -57,8 +59,10 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import MessageCard from "@/components/UI/MessageCard";
+import alert from "@/static/mixins/alert";
 export default {
   name: "MessageWrapper",
+  mixins: [alert],
   components: {
     MessageCard,
   },
@@ -69,7 +73,8 @@ export default {
     show_scroll_down: true,
     max_scroll: 0,
     box: null,
-    current_user: null,
+    text: "",
+    loaded_users: {},
   }),
   watch: {
     current_room() {
@@ -78,13 +83,16 @@ export default {
       }
     },
   },
+  created() {
+    this.loadUsers();
+  },
   mounted() {
     if (this.current_room) {
       this.$nextTick(() => this.initMessageBox());
     }
   },
   methods: {
-    ...mapActions(["createWritingAlert"]),
+    ...mapActions(["createWritingAlert", "addNewMessage"]),
     initMessageBox() {
       this.box = document.querySelector(".messages_box");
 
@@ -127,9 +135,32 @@ export default {
 
       this.createWritingAlert(param);
     },
+    async handleAddMessage() {
+      try {
+        this.loading = true;
+        let data = { text: this.text };
+        await this.$__validateNewMessageForm(data);
+        data = {
+          ...data,
+          id_sender: this.user._id,
+          id_room: this.current_room._id,
+        };
+        this.addNewMessage(data);
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.text = "";
+        this.loading = false;
+      }
+    },
+    loadUsers() {
+      this.users.forEach((user) => {
+        this.loaded_users[user._id] = user;
+      });
+    },
   },
   computed: {
-    ...mapState(["current_room", "user_writing_alert"]),
+    ...mapState(["current_room", "user_writing_alert", "users"]),
     isNewWritingAlert() {
       const alert = this.user_writing_alert;
       return (

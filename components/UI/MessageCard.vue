@@ -1,17 +1,16 @@
 <template>
   <article ref="message" class="message">
     <div>
-      <div class="user_infos">
-        <span>@username</span>
+      <div v-if="sender" class="user_infos">
+        <span>@{{ sender.username }}</span>
       </div>
       <div class="message_body">
         <p>
-          hi techlead here. Today our is camhubasdf adsjflsjad;f
-          s;adjfdasj;fldsja fdsajfsdafs body
+          {{ message.text }}
         </p>
       </div>
       <div class="date">
-        <span>{{ "new Date()" }}</span>
+        <span>{{ $__formatDate(message.date_creation) }}</span>
       </div>
     </div>
   </article>
@@ -21,6 +20,14 @@
 export default {
   name: "MessageCard",
   props: {
+    sender: {
+      type: Object,
+      default: () => {},
+    },
+    message: {
+      type: Object,
+      required: true,
+    },
     current_user: {
       type: Boolean,
       default: false,
@@ -28,7 +35,9 @@ export default {
   },
   mounted() {
     // adapt current user message
-    this.handleCurrentUserMessage();
+    this.$nextTick(() => {
+      this.handleCurrentUserMessage();
+    });
   },
   methods: {
     handleCurrentUserMessage() {

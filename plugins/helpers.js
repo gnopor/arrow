@@ -130,3 +130,12 @@ Vue.prototype.$__validateAddGroupRoomForm = form =>
 
     resolve();
   });
+
+// ==> validate input message form
+Vue.prototype.$__validateNewMessageForm = form =>
+  new Promise((resolve, reject) => {
+    const text = form.text.toString().trim();
+    !text && reject("Enter your message");
+
+    resolve();
+  });

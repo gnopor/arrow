@@ -35,22 +35,48 @@ export default {
       type: Object,
       required: true,
     },
-    group: {
-      type: Boolean,
-      default: false,
-    },
   },
   data: () => ({
-    show_bell: true,
+    show_bell: false,
+    current_user: {},
   }),
+  watch: {
+    new_message_alert() {
+      const alert = this.new_message_alert;
+
+      if (alert.room.is_group) {
+        this.show_bell =
+          alert.room._id == this.room._id &&
+          alert.room.users.includes(this.current_user._id);
+      }
+      if (!alert.room.is_group) {
+        const users = alert.room.users;
+        this.show_bell =
+          (users[0] == this.room._id && users[1] == this.current_user._id) ||
+          (users[1] == this.room._id && users[0] == this.current_user._id);
+      }
+    },
+    show_bell() {
+      if (this.show_bell) {
+        const audio = new Audio("/ringtones/notification.mp3");
+        audio.play();
+      }
+    },
+  },
+  mounted() {
+    this.current_user = this.$__getUser();
+  },
   methods: {
     ...mapActions(["setCurrentRoom"]),
     handleFocus() {
+      // hide bell
+      this.show_bell = false;
+
       // get focus
       this.getFocus();
 
       // set current room
-      this.setCurrentRoom({ data: { ...this.room }, _this: this });
+      this.setCurrentRoom({ data: { ...this.room }, user: this.current_user });
     },
     getFocus() {
       const room = this.$refs[this.room._id];
@@ -61,7 +87,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["new_user_id"]),
+    ...mapState(["new_user_id", "new_message_alert"]),
     getAvatarURI() {
       return `${process.env.baseUrl}${this.room.avatar}`;
     },
