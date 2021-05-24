@@ -106,8 +106,8 @@ export const actions = {
   },
   addNewMessage(_, data) {
     this.$socket.emit("new_message", data);
+  },
+  joinGroup(_, { id_room, id_user }) {
+    console.log(id_room, id_user);
   }
-  // getUser({ state }, id) {
-  //   return state.users.find(user => user._id == id);
-  // }
 };

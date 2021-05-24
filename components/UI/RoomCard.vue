@@ -23,11 +23,20 @@
 
     <!-- user connected bell  -->
     <i v-if="new_user_id == room._id" class="bg-accent connected" />
+
+    <!-- modal  -->
+
+    <AddUserModal
+      v-if="show_join_group_modal"
+      @close="show_join_group_modal = false"
+      @join="handleJoinGroup"
+    />
   </article>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import AddUserModal from "@/components/UI/AddUserModal";
 export default {
   name: "RoomCard",
   props: {
@@ -36,8 +45,12 @@ export default {
       required: true,
     },
   },
+  components: {
+    AddUserModal,
+  },
   data: () => ({
     show_bell: false,
+    show_join_group_modal: false,
     current_user: {},
   }),
   watch: {
@@ -67,15 +80,20 @@ export default {
     this.current_user = this.$__getUser();
   },
   methods: {
-    ...mapActions(["setCurrentRoom"]),
+    ...mapActions(["setCurrentRoom", "joinGroup"]),
     handleFocus() {
       // hide bell
       this.show_bell = false;
 
-      // get focus
-      this.getFocus();
+      if (
+        this.room.is_group &&
+        !this.room.users.includes(this.current_user._id)
+      ) {
+        this.show_join_group_modal = true;
+        return;
+      }
 
-      // set current room
+      this.getFocus();
       this.setCurrentRoom({ data: { ...this.room }, user: this.current_user });
     },
     getFocus() {
@@ -84,6 +102,13 @@ export default {
         .querySelectorAll(".room_card[data-active]")
         .forEach((room) => room.removeAttribute("data-active"));
       room.setAttribute("data-active", true);
+    },
+    handleJoinGroup() {
+      this.show_join_group_modal = false;
+      this.joinGroup({
+        id_room: this.room._id,
+        id_user: this.current_user._id,
+      });
     },
   },
   computed: {
