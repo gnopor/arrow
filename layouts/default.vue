@@ -23,10 +23,13 @@ export default {
     loaded: false,
   }),
   watch: {
-    new_error() {
-      if (this.new_error) {
-        this.error = this.new_error;
-        this.setNewError(false);
+    new_notification() {
+      if (this.new_notification && this.new_notification.is_error) {
+        this.error = this.new_notification.error;
+        this.setNewNotification(false);
+      } else if (this.new_notification && !this.new_notification.is_error) {
+        this.message = this.new_notification.message;
+        this.setNewNotification(false);
       }
     },
   },
@@ -35,14 +38,12 @@ export default {
   },
   methods: {
     ...mapActions(["InitUsersAndRooms"]),
-    ...mapMutations(["setNewError"]),
+    ...mapMutations(["setNewNotification"]),
     async handleInitStore() {
       try {
         this.loading = true;
         // init user list and room
-        if (this.users.length == 0) {
-          await this.InitUsersAndRooms(this);
-        }
+        this.users.length == 0 && (await this.InitUsersAndRooms(this));
 
         this.loaded = true;
       } catch (error) {
@@ -53,7 +54,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["users", "new_error"]),
+    ...mapState(["users", "new_notification"]),
   },
 };
 </script>

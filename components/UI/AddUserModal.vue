@@ -56,6 +56,18 @@ export default {
   flex-direction: column;
   border-radius: 10px;
   min-width: 300px;
+  animation: custom_modal_show 0.4s ease forwards;
+}
+
+@keyframes custom_modal_show {
+  0% {
+    opacity: 0;
+    transform: translate(0, -40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 }
 
 .custom_modal_title {

@@ -1,7 +1,7 @@
 export const state = () => ({
   current_room: null,
   new_user_id: null,
-  new_error: null,
+  new_notification: null,
   user_writing_alert: null,
   new_message_alert: {},
   rooms: [],
@@ -18,16 +18,21 @@ export const mutations = {
   SOCKET_new_writing(state, data) {
     state.user_writing_alert = data;
   },
-  setNewError(state, error) {
-    state.new_error = error;
-  },
-  setRooms(state, rooms) {
-    state.rooms = rooms;
-  },
   SOCKET_new_message(state, { message, id_room }) {
     const index = state.rooms.findIndex(room => room._id == id_room);
     state.rooms[index].messages.push(message);
   },
+  SOCKET_join_group(state, { id_room, id_user }) {
+    const index = state.rooms.findIndex(room => room._id == id_room);
+    state.rooms[index].users.push(id_user);
+  },
+  setNewNotification(state, notification) {
+    state.new_notification = notification;
+  },
+  setRooms(state, rooms) {
+    state.rooms = rooms;
+  },
+
   setUsers(state, users) {
     state.users = users;
   },
@@ -41,7 +46,10 @@ export const mutations = {
 
 export const actions = {
   SOCKET_set_new_error({ commit }, error) {
-    commit("setNewError", error);
+    commit("setNewNotification", { error, is_error: true });
+  },
+  SOCKET_set_new_notification({ commit }, message) {
+    commit("setNewNotification", { message, is_error: false });
   },
   SOCKET_new_message_alert({ commit, state }, { id_sender, id_room }) {
     const room = state.rooms.find(room => room._id == id_room);
@@ -108,6 +116,6 @@ export const actions = {
     this.$socket.emit("new_message", data);
   },
   joinGroup(_, { id_room, id_user }) {
-    console.log(id_room, id_user);
+    this.$socket.emit("join_group", { id_room, id_user });
   }
 };
